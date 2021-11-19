@@ -29,7 +29,7 @@ public class Matrix {
             }
             else if(onGrid[x][y])
             {
-                System.out.println(cellCount);
+                cellCount ++;
                 x = rand.nextInt(gridSize);
                 y = rand.nextInt(gridSize);
 
