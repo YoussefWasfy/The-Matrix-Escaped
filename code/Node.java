@@ -1,4 +1,3 @@
-package Code;
 
 public class Node {
 	
@@ -7,7 +6,11 @@ public class Node {
 	String operator;
 	int depth;
 	int pathCost;
-	
+
+	public Node(String state){
+		this.state = state;
+		this.depth = 0;
+	}
 	public Node(String state, Node parent, String operator, int depth, int pathCost) {
 		this.state = state;
 		this.parent = parent;
@@ -15,5 +18,6 @@ public class Node {
 		this.depth = depth;
 		this.pathCost = pathCost;
 	}
+
 }
 
