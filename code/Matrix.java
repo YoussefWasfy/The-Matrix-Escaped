@@ -1,4 +1,4 @@
-import javafx.util.Pair;
+package Code;
 
 import java.util.*;
 
@@ -334,6 +334,30 @@ public class Matrix{
             heuristic = pathcost;
         return heuristic;
     }
+    
+    public static int getHeuristic2(Node node, String[]tb){
+        String state = node.state;
+        int heuristic;
+        int death = Integer.parseInt(state.split(";")[6]);
+        int kills = Integer.parseInt(state.split(";")[7]);
+        String neox = state.split(";")[0].split(",")[0];
+        String neoy = state.split(";")[0].split(",")[1];
+        String noOfHostagesLeftglobal = state.split(";")[3];
+        String noOfHostagesTurnAgentsglobal = state.split(";")[4];
+        String noCarriedHostagesglobal = state.split(";")[2];
+
+        int pathcost = (death * 4) + (kills * 100) / 6;
+
+        int distance = Math.abs(Integer.parseInt(neox) - Integer.parseInt(tb[1])) + Math.abs(Integer.parseInt(neoy) - Integer.parseInt(tb[0]));
+        if (distance == 0 && noOfHostagesLeftglobal.equals("0") && noOfHostagesTurnAgentsglobal.equals("0")  && (Integer.parseInt(noCarriedHostagesglobal)==0))
+            heuristic = 0;
+        else
+            heuristic = pathcost;
+        return heuristic;
+    }
+    
+    
+    
     public static LinkedList <Node> depthFirst(Node node, LinkedList<Node> nodes)
     {
         nodes.addFirst(node);
@@ -425,14 +449,19 @@ public class Matrix{
                 break;
 
             case "GR2":
+                temp = new LinkedList<Node>(greedySearch(node, nodes));
+
                 //GR2 Function
                 break;
 
             case "AS1":
+            	temp = new LinkedList<Node>(greedySearch(node, nodes));
                 //AS1 Function
                 break;
 
             case "AS2":
+                temp = new LinkedList<Node>(greedySearch(node, nodes));
+
                 //AS2 Function
                 break;
         }
@@ -739,6 +768,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "up", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
                             }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "up", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "up", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "up", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
                                     repeatedStates.add(stateWithout);
@@ -804,6 +842,15 @@ public class Matrix{
                                 node = new Node(state, nodeToCheckGoal, "down", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
                             }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "down", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "down", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "down", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
                                     repeatedStates.add(stateWithout);
@@ -865,6 +912,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "left", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
+                            }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "left", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "left", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "left", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
                             }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
@@ -928,6 +984,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "right", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
+                            }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "right", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "right", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "right", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
                             }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
@@ -1006,6 +1071,15 @@ public class Matrix{
                                 node = new Node(state, nodeToCheckGoal, "carry", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
                             }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "carry", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "carry", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "carry", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
                                     repeatedStates.add(stateWithout);
@@ -1076,6 +1150,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "drop", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
+                            }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "drop", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "drop", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "drop", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
                             }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
@@ -1150,6 +1233,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "takePill", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
+                            }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "takePill", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "takePill", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "takePill", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
                             }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
@@ -1312,6 +1404,15 @@ public class Matrix{
                                 node = new Node(state, nodeToCheckGoal, "kill", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
                             }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "kill", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "kill", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "kill", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
                                     repeatedStates.add(stateWithout);
@@ -1381,6 +1482,15 @@ public class Matrix{
                             else if (strategy.equals("GR1")) {
                                 node = new Node(state, nodeToCheckGoal, "fly", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB));
 
+                            }
+                            else if (strategy.equals("AS1")) {
+                                node = new Node(state, nodeToCheckGoal, "fly", nodeToCheckGoal.depth++, getHeuristic1(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
+                            }
+                            else if (strategy.equals("GR2")) {
+                                node = new Node(state, nodeToCheckGoal, "fly", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB));
+                            }
+                            else if (strategy.equals("AS2")) {
+                                node = new Node(state, nodeToCheckGoal, "fly", nodeToCheckGoal.depth++, getHeuristic2(nodeToCheckGoal, tB) + getAccumalatedPathCost(nodeToCheckGoal));
                             }
                             if (!repeatedStates.contains(stateWithout)) {
                                 if (Integer.parseInt(neoHealth) < 100) {
