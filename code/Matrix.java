@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class Matrix{
@@ -518,6 +520,27 @@ public class Matrix{
                             ops.remove("carry");
                         }
                     }
+                    for (int i =0 ; i < hostagesglobalArray.length; i+=3)
+                    {
+                       if ((hostagesglobalArray[i].equals(Integer.toString(Integer.parseInt(neoPosInState[0]) - 1)) && hostagesglobalArray[i + 1].equals(neoPosInState[1])) &&( Integer.parseInt(hostagesglobalArray[i+2]) >= 98))
+                       {
+                           ops.remove("up");
+                       }
+                       if ((hostagesglobalArray[i].equals(Integer.toString(Integer.parseInt(neoPosInState[0]) + 1)) && hostagesglobalArray[i + 1].equals(neoPosInState[1])) &&( Integer.parseInt(hostagesglobalArray[i+2]) >= 98))
+                       {
+                           ops.remove("down");
+                       }
+                       if ((hostagesglobalArray[i].equals(neoPosInState[0]) && hostagesglobalArray[i + 1].equals(Integer.toString(Integer.parseInt(neoPosInState[1])-1))) &&( Integer.parseInt(hostagesglobalArray[i+2]) >= 98))
+                       {
+                           ops.remove("left");
+                       }
+
+                       if ((hostagesglobalArray[i].equals(neoPosInState[0]) && hostagesglobalArray[i + 1].equals(Integer.toString(Integer.parseInt(neoPosInState[1])+1))) &&( Integer.parseInt(hostagesglobalArray[i+2]) >= 98))
+                        {
+                            ops.remove("right");
+                        }
+
+                    }
 //                    If not in cell that contains a pad remove operator fly
                     boolean fly = false;
                     boolean flyOperater = false;
@@ -648,6 +671,7 @@ public class Matrix{
                                     hostageCarriedDamageArray[k] = Integer.toString(Integer.parseInt(hostageCarriedDamageArray[k]) + 2);
                                 }
 
+
                             }
                             if (hostagesXYandHealthArrayList.size() == 0) {
                                 hostages = "-1,-1,-1000000";
@@ -688,7 +712,7 @@ public class Matrix{
                             String agents = agentsglobal;
                             String[] hostageCarriedDamageArray = hostageCarriedDamage.split(",");
                             for (int j = 0; j < hostagesXYandHealthArrayList.size(); j += 3) {
-                                if (Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) >= 98) {
+                                if (Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) >= 98 ) {
 
                                     System.out.println("down Died" + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1) + "," + hostagesXYandHealthArrayList.get(j + 2));
                                     hostTurnToAgentXYlocal += "," + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1);
@@ -748,7 +772,7 @@ public class Matrix{
                             String agents = agentsglobal;
                             String[] hostageCarriedDamageArray = hostageCarriedDamage.split(",");
                             for (int j = 0; j < hostagesXYandHealthArrayList.size(); j += 3) {
-                                if (Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) >= 98) {
+                                if ((Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) >= 98)) {
                                     System.out.println("left Died" + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1) + "," + hostagesXYandHealthArrayList.get(j + 2));
                                     hostTurnToAgentXYlocal += "," + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1);
                                     noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) + 1);
@@ -956,6 +980,10 @@ public class Matrix{
                             if (Integer.parseInt(noCarriedHostages) != 0)
                             {
                                 for (int x = 1; x < hostageCarriedDamageArrayList.size(); x++) {
+                                    if (Integer.parseInt(hostageCarriedDamageArrayList.get(x))  >= 100)
+                                    {
+                                        deathCount = Integer.toString(Integer.parseInt(deathCount) + 1);
+                                    }
                                     hostageCarriedDamageArrayList.remove(x);
                                     x--;
                                 }
@@ -1103,61 +1131,75 @@ public class Matrix{
                             String[] hostTurnToAgentXYlocalArray = hostTurnToAgentXYlocal.split(",");
                             ArrayList<String> hostagesTurnToAgentXYlocalArrayList = new ArrayList<String>(Arrays.asList(hostTurnToAgentXYlocalArray));
                             for (int k = 0; k < hostagesTurnToAgentXYlocalArrayList.size(); k += 2) {
-                                if ((hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) + 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
-                                    killCount = Integer.toString(Integer.parseInt(killCount) + 1);
-                                    noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k);
-                                    killAgent = false;
-                                    break;
-                                } else if ((hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) - 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
-                                    killCount = Integer.toString(Integer.parseInt(killCount) + 1);
-                                    noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k);
-                                    killAgent = false;
-                                    break;
-                                } else if ((hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) + 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
-                                    killCount = Integer.toString(Integer.parseInt(killCount) + 1);
-                                    noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
-                                    hostagesTurnToAgentXYlocalArrayList.remove(k);
-                                    killAgent = false;
-                                    break;
-                                } else if ((hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) - 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
+                                 if ((hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) - 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
                                     System.out.println("Kill Hostage up");
                                     killCount = Integer.toString(Integer.parseInt(killCount) + 1);
                                     noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
                                     hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
                                     hostagesTurnToAgentXYlocalArrayList.remove(k);
-                                    killAgent = false;
-                                    break;
+                                    k -=2;
+//                                    killAgent = false;
+//                                    break;
+                                }
+                                 else if ((hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) + 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
+                                     killCount = Integer.toString(Integer.parseInt(killCount) + 1);
+                                     noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
+                                     hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
+                                     hostagesTurnToAgentXYlocalArrayList.remove(k);
+                                     k-=2;
+//                                     killAgent = false;
+//                                     break;
+                                 }
+                                 else if ((hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) - 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
+                                     killCount = Integer.toString(Integer.parseInt(killCount) + 1);
+                                     noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
+                                     hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
+                                     hostagesTurnToAgentXYlocalArrayList.remove(k);
+                                     k-=2;
+//                                     killAgent = false;
+//                                     break;
+                                 }
+                                 else if ((hostagesTurnToAgentXYlocalArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) + 1))) && (hostagesTurnToAgentXYlocalArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
+                                    killCount = Integer.toString(Integer.parseInt(killCount) + 1);
+                                    noOfHostagesTurnAgents = Integer.toString(Integer.parseInt(noOfHostagesTurnAgents) - 1);
+                                    hostagesTurnToAgentXYlocalArrayList.remove(k + 1);
+                                    hostagesTurnToAgentXYlocalArrayList.remove(k);
+                                    k-=2;
+//                                    killAgent = false;
+//                                    break;
                                 }
 
                             }
                             if (killAgent)
                             {
                                 for (int k = 0; k < agentsArrayList.size(); k += 2) {
-                                    if ((agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) + 1))) && (agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
+                                    if ((agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) - 1))) && (agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
                                         killCount = Integer.toString(Integer.parseInt(killCount) + 1);
                                         agentsArrayList.remove(k + 1);
                                         agentsArrayList.remove(k);
-                                        break;
-                                    } else if ((agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) - 1))) && (agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
+                                        k-=2;
+//                                        break;
+                                    }
+                                    else if ((agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) + 1))) && (agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
                                         killCount = Integer.toString(Integer.parseInt(killCount) + 1);
                                         agentsArrayList.remove(k + 1);
                                         agentsArrayList.remove(k);
-                                        break;
-                                    } else if ((agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) + 1))) && (agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
+                                        k-=2;
+//                                        break;
+                                    }
+                                    else if ((agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) - 1))) && (agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
                                         killCount = Integer.toString(Integer.parseInt(killCount) + 1);
                                         agentsArrayList.remove(k + 1);
                                         agentsArrayList.remove(k);
-                                        break;
-                                    } else if ((agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])) - 1))) && (agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])))))) {
+                                        k-=2;
+//                                        break;
+                                    }
+                                    else if ((agentsArrayList.get(k + 1).equals(Integer.toString((Integer.parseInt(neoPosInState[1])) + 1))) && (agentsArrayList.get(k).equals(Integer.toString((Integer.parseInt(neoPosInState[0])))))) {
                                         killCount = Integer.toString(Integer.parseInt(killCount) + 1);
                                         agentsArrayList.remove(k + 1);
                                         agentsArrayList.remove(k);
-                                        break;
+                                        k-=2;
+//                                        break;
                                     }
 
                                 }
