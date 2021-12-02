@@ -11,6 +11,7 @@ public class Node {
 		this.state = state;
 		this.depth = 0;
 	}
+
 	public Node(String state, Node parent, String operator, int depth, int pathCost) {
 		this.state = state;
 		this.parent = parent;
