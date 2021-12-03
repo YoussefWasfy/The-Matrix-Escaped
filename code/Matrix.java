@@ -1,5 +1,3 @@
-package Code;
-
 import java.util.*;
 
 public class Matrix{
@@ -365,7 +363,7 @@ public class Matrix{
     }
     public static LinkedList<Node> breadthFirst(Node node, LinkedList<Node> nodes)
     {
-        nodes.add(node);
+        nodes.addLast(node);
         return nodes;
     }
 
@@ -436,6 +434,7 @@ public class Matrix{
 
             case "ID":
                 //ID Function
+                temp = new LinkedList<Node>(depthFirst(node, nodes));
                 break;
 
             case "UC":
@@ -1280,7 +1279,7 @@ public class Matrix{
                             ArrayList<String> agentsArrayList = new ArrayList<String>(Arrays.asList(agentsArray));
 
                             for (int j = 0; j < hostagesXYandHealthArrayList.size(); j += 3) {
-                                if (Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) >= 98) {
+                                if (Integer.parseInt(hostagesXYandHealthArrayList.get(j + 2)) > 98) {
 //                                    System.out.println("kill Died" + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1) + "," + hostagesXYandHealthArrayList.get(j + 2));
 
                                     hostTurnToAgentXYlocal += "," + hostagesXYandHealthArrayList.get(j) + "," + hostagesXYandHealthArrayList.get(j + 1);
@@ -1514,6 +1513,7 @@ public class Matrix{
         //Then we add those new children to the queue, using certain queuing function (bfs, dfs, etc...)
 
     }
+
 
 
     public static String solve(String grid, String strategy, boolean visualize){
